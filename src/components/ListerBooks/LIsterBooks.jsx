@@ -7,7 +7,7 @@ import Book from "../Book/Book";
 
 const LIsterBooks = () => {
   const [readList, setReadList] = useState([]);
-
+  const [sort, setSort] = useState('');
   const allBooks = useLoaderData();
 
   useEffect(() => {
@@ -21,24 +21,40 @@ const LIsterBooks = () => {
     setReadList(readBookList);
   }, []);
 
+  const handleSort = sortType => {
+    setSort(sortType);
+
+    if(sortType === 'No of pages'){
+      const sortedReadList = [...readList].sort((a,b) => a.totalPages - b.totalPages);setReadList(sortedReadList);
+    }
+    if(sortType === 'totalPages'){
+      const sortedReadList = [...readList].sort((a,b) => a.rating - b.rating);
+      setReadList(sortedReadList);
+    }
+  }
+
   return (
     <div>
-      <h3 className="my-8">Listed Books</h3>
-      <div className="dropdown">
-        <div tabIndex={0} role="button" className="btn m-1">
-          Click
+      <h3 className="my-8 text-center bg-gray-200 py-3 text-3xl font-bold">Books</h3>
+      <div className="flex items-center justify-center">
+        <div className="dropdown">
+        <div tabIndex={0} role="button" className="btn m-1 bg-green-500 px-4 text-white">
+          {
+            sort ? `Sort by ${sort}` : 'Sort by'
+          }
         </div>
         <ul
           tabIndex={0}
           className="dropdown-content menu bg-base-100 rounded-box z-[1] w-52 p-2 shadow"
         >
-          <li>
-            <a>Item 1</a>
+          <li onClick={() => handleSort('totalPages')}>
+            <a>Rating</a>
           </li>
-          <li>
-            <a>Item 2</a>
+          <li onClick={() => handleSort('No of pages')}>
+            <a>No of pages</a>
           </li>
         </ul>
+      </div>
       </div>
       <Tabs>
         <TabList>
@@ -48,12 +64,16 @@ const LIsterBooks = () => {
 
         <TabPanel>
           <h2>Read List : {readList.length}</h2>
-          {readList.map((book) => (
-            <Book key={book.bookId} book={book}></Book>
+         <div className="">
+           {readList.map((book) => (
+           <div>
+             <Book key={book.bookId} book={book}></Book>
+           </div>
           ))}
+         </div>
         </TabPanel>
         <TabPanel>
-          <h2>Any content 2</h2>
+          <h2>Any content </h2>
         </TabPanel>
       </Tabs>
     </div>
