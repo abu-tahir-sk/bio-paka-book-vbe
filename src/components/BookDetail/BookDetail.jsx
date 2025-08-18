@@ -22,7 +22,7 @@ const BookDetail = () => {
   <div className="hero-content flex-col lg:flex-row gap-8">
     <img
       src={image}
-      className=" rounded-lg shadow-2xl" />
+      className=" rounded-lg shadow-2xl w-96" />
     <div className="">
       <h2 className="text-5xl font-bold pt-3">{bookName} </h2>
       <h6>{author}</h6>
